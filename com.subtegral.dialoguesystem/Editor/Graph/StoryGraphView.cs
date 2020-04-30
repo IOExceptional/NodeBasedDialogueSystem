@@ -141,7 +141,10 @@ namespace Subtegral.DialogueSystem.Editor
             tempDialogueNode.SetPosition(new Rect(position,
                 DefaultNodeSize)); //To-Do: implement screen center instantiation positioning
             
-            var idField = new TextField("");
+            var idLabel = new Label("Node Id:");
+            tempDialogueNode.mainContainer.Add(idLabel);
+            
+            var idField = new TextField(int.MaxValue, false, false, '*');
             idField.RegisterValueChangedCallback(evt =>
             {
                 tempDialogueNode.DialogueId = evt.newValue;
@@ -150,7 +153,10 @@ namespace Subtegral.DialogueSystem.Editor
             idField.SetValueWithoutNotify(tempDialogueNode.DialogueId);
             tempDialogueNode.mainContainer.Add(idField);
 
-            var textField = new TextField("");
+            var textLabel = new Label("Dialogue (multi-line):");
+            tempDialogueNode.mainContainer.Add(textLabel);
+            
+            var textField = new TextField(int.MaxValue, true, false, '*');
             textField.RegisterValueChangedCallback(evt =>
             {
                 tempDialogueNode.DialogueText = evt.newValue;
