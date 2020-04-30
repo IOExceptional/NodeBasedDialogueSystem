@@ -161,7 +161,6 @@ namespace Subtegral.DialogueSystem.Editor
             {
                 tempDialogueNode.DialogueText = evt.newValue;
             });
-            textField.multiline = true;
             textField.SetValueWithoutNotify(tempDialogueNode.DialogueText);
             tempDialogueNode.mainContainer.Add(textField);
 
