@@ -118,17 +118,18 @@ namespace Subtegral.DialogueSystem.Editor
             return compatiblePorts;
         }
 
-        public void CreateNewDialogueNode(string nodeName, Vector2 position)
+        public void CreateNewDialogueNode(string nodeName, string nodeText, Vector2 position)
         {
-            AddElement(CreateNode(nodeName, position));
+            AddElement(CreateNode(nodeName, nodeText, position));
         }
 
-        public DialogueNode CreateNode(string nodeName, Vector2 position)
+        public DialogueNode CreateNode(string nodeName, string nodeText, Vector2 position)
         {
             var tempDialogueNode = new DialogueNode()
             {
                 title = nodeName,
-                DialogueText = nodeName,
+                DialogueId = nodeName,
+                DialogueText = nodeText,
                 GUID = Guid.NewGuid().ToString()
             };
             tempDialogueNode.styleSheets.Add(Resources.Load<StyleSheet>("Node"));
@@ -139,14 +140,23 @@ namespace Subtegral.DialogueSystem.Editor
             tempDialogueNode.RefreshPorts();
             tempDialogueNode.SetPosition(new Rect(position,
                 DefaultNodeSize)); //To-Do: implement screen center instantiation positioning
+            
+            var idField = new TextField("");
+            idField.RegisterValueChangedCallback(evt =>
+            {
+                tempDialogueNode.DialogueId = evt.newValue;
+                tempDialogueNode.title = evt.newValue;
+            });
+            idField.SetValueWithoutNotify(tempDialogueNode.DialogueId);
+            tempDialogueNode.mainContainer.Add(idField);
 
             var textField = new TextField("");
             textField.RegisterValueChangedCallback(evt =>
             {
                 tempDialogueNode.DialogueText = evt.newValue;
-                tempDialogueNode.title = evt.newValue;
             });
-            textField.SetValueWithoutNotify(tempDialogueNode.title);
+            textField.multiline = true;
+            textField.SetValueWithoutNotify(tempDialogueNode.DialogueText);
             tempDialogueNode.mainContainer.Add(textField);
 
             var button = new Button(() => { AddChoicePort(tempDialogueNode); })
